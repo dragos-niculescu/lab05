@@ -1,6 +1,7 @@
 package ro.pub.cs.systems.eim.lab05.startedserviceactivity.view;
 
 import ro.pub.cs.systems.eim.lab05.startedserviceactivity.R;
+import ro.pub.cs.systems.eim.lab05.startedserviceactivity.general.Constants;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -26,10 +27,15 @@ public class StartedServiceActivity extends Activity {
         
         
         // TODO: exercise 7a - create an instance of the StartedServiceBroadcastReceiver
-
+        startedServiceBroadcastReceiver = new StartedServiceBroadcastReceiver(messageTextView);
+        
         // TODO: exercise 7b - create an instance of the IntentFilter
         // with the corresponding actions of the broadcast intents
-
+        startedServiceIntentFilter = new IntentFilter();
+        startedServiceIntentFilter.addAction(Constants.ACTION_STRING);
+        startedServiceIntentFilter.addAction(Constants.ACTION_INTEGER);
+        startedServiceIntentFilter.addAction(Constants.ACTION_ARRAY_LIST);
+        
         // TODO: exercise 7d - start the service
         Intent intent = new Intent();
         intent.setComponent(new ComponentName("ro.pub.cs.systems.eim.lab05.startedservice", "ro.pub.cs.systems.eim.lab05.startedservice.service.StartedService"));
@@ -39,14 +45,14 @@ public class StartedServiceActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        registerReceiver(startedServiceBroadcastReceiver, startedServiceIntentFilter);
         // TODO: exercise 7c - register the broadcast receiver for the intent filter actions
     }
 
     @Override
     protected void onPause() {
         // TODO: exercise 7c - unregister the broadcast receiver
-
+    	unregisterReceiver(startedServiceBroadcastReceiver);
         super.onPause();
     }
 
